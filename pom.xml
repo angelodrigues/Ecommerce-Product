@@ -8,11 +8,11 @@
 		<version>3.4.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.product_h2</groupId>
-	<artifactId>ecommerce_product_h2</artifactId>
+	<groupId>com.ecommerce</groupId>
+	<artifactId>product-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ecommerce_product_h2</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Product Microservice</name>
+	<description>Handles product management for the e-commerce platform</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -76,7 +76,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.product_h2.EcommerceProductH2Application</mainClass>
+					<mainClass>com.product.EcommerceProductApplication</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
