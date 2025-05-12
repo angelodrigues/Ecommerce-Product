@@ -32,7 +32,7 @@ public class OpenApiConfig {
                         .description("API for managing products, suppliers, and stock")
                         .version("1.0.0")
                         .contact(new Contact()
-                                .name("Your Name")
+                                .name("Angelo Barcelos")
                                 .email("your.email@example.com")
                                 .url("https://github.com/yourusername"))
                         .license(new License()

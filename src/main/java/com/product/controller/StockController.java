@@ -1,9 +1,6 @@
 package com.product.controller;
 
 import com.product.dto.StockDTO;
-import com.product.entity.Stock;
-import com.product.mapper.EntityMapper;
-import com.product.service.ProductService;
 import com.product.service.StockService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/stocks")
@@ -21,64 +17,49 @@ public class StockController {
     
     @Autowired
     private StockService stockService;
-    
-    @Autowired
-    private ProductService productService;
-    
-    @Autowired
-    private EntityMapper mapper;
 
     @GetMapping
-    @Operation(summary = "Get all stock entries", description = "Retrieves a list of all stock entries")
+    @Operation(summary = "Get all stocks", description = "Retrieves a list of all stocks")
     public List<StockDTO> findAll() {
-        return stockService.findAll()
-                .stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
+        return stockService.findAll();
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get stock by ID", description = "Retrieves a stock entry by its ID")
+    @Operation(summary = "Get stock by ID", description = "Retrieves a stock by its ID")
     public ResponseEntity<StockDTO> findById(@PathVariable Long id) {
         return stockService.findById(id)
-                .map(stock -> ResponseEntity.ok(mapper.toDTO(stock)))
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    @Operation(summary = "Create a new stock entry", description = "Creates a new stock entry with the provided details")
+    @Operation(summary = "Create a new stock", description = "Creates a new stock with the provided details")
     public ResponseEntity<StockDTO> create(@RequestBody StockDTO stockDTO) {
-        return productService.findById(stockDTO.getProductId())
-                .map(product -> {
-                    Stock stock = mapper.toEntity(stockDTO, product);
-                    return ResponseEntity.ok(mapper.toDTO(stockService.save(stock)));
-                })
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            return ResponseEntity.ok(stockService.create(stockDTO));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update a stock entry", description = "Updates an existing stock entry with the provided details")
+    @Operation(summary = "Update a stock", description = "Updates an existing stock with the provided details")
     public ResponseEntity<StockDTO> update(@PathVariable Long id, @RequestBody StockDTO stockDTO) {
-        if (!stockService.findById(id).isPresent()) {
+        try {
+            return ResponseEntity.ok(stockService.update(id, stockDTO));
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
-        
-        return productService.findById(stockDTO.getProductId())
-                .map(product -> {
-                    stockDTO.setId(id);
-                    Stock stock = mapper.toEntity(stockDTO, product);
-                    return ResponseEntity.ok(mapper.toDTO(stockService.save(stock)));
-                })
-                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a stock entry", description = "Deletes a stock entry by its ID")
+    @Operation(summary = "Delete a stock", description = "Deletes a stock by its ID")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (!stockService.findById(id).isPresent()) {
+        try {
+            stockService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
-        stockService.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 } 

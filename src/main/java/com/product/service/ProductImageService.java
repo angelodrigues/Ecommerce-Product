@@ -1,39 +1,15 @@
 package com.product.service;
 
-import com.product.entity.ProductImage;
-import com.product.repository.ProductImageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.product.dto.ProductImageDTO;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class ProductImageService {
-    @Autowired
-    private ProductImageRepository productImageRepository;
-
-    public List<ProductImage> findAll() {
-        return productImageRepository.findAll();
-    }
-
-    public Optional<ProductImage> findById(Long id) {
-        return productImageRepository.findById(id);
-    }
-
-    public Optional<ProductImage> findImageByProductId(Long productId) {
-        return productImageRepository.findFirstByProductId(productId);
-    }
-
-    public List<ProductImage> findAllImagesBySupplierId(Long supplierId) {
-        return productImageRepository.findAllBySupplierId(supplierId);
-    }
-
-    public ProductImage save(ProductImage productImage) {
-        return productImageRepository.save(productImage);
-    }
-
-    public void deleteById(Long id) {
-        productImageRepository.deleteById(id);
-    }
+public interface ProductImageService {
+    List<ProductImageDTO> findAll();
+    Optional<ProductImageDTO> findById(Long id);
+    Optional<ProductImageDTO> findImageByProductId(Long productId);
+    List<ProductImageDTO> findAllImagesBySupplierId(Long supplierId);
+    ProductImageDTO create(ProductImageDTO productImageDTO);
+    ProductImageDTO update(Long id, ProductImageDTO productImageDTO);
+    void deleteById(Long id);
 }

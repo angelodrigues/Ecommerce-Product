@@ -1,31 +1,13 @@
 package com.product.service;
 
-import com.product.entity.Stock;
-import com.product.repository.StockRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.product.dto.StockDTO;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class StockService {
-    @Autowired
-    private StockRepository stockRepository;
-
-    public List<Stock> findAll() {
-        return stockRepository.findAll();
-    }
-
-    public Optional<Stock> findById(Long id) {
-        return stockRepository.findById(id);
-    }
-
-    public Stock save(Stock stock) {
-        return stockRepository.save(stock);
-    }
-
-    public void deleteById(Long id) {
-        stockRepository.deleteById(id);
-    }
+public interface StockService {
+    List<StockDTO> findAll();
+    Optional<StockDTO> findById(Long id);
+    StockDTO create(StockDTO stockDTO);
+    StockDTO update(Long id, StockDTO stockDTO);
+    void deleteById(Long id);
 } 
