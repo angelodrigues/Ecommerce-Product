@@ -1,15 +1,14 @@
-FROM eclipse-temurin:21-jdk-alpine as build
-WORKDIR /workspace/app
-
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-COPY src src
-
-RUN chmod +x ./mvnw
-RUN ./mvnw install -DskipTests
-
+# Etapa base com JRE
 FROM eclipse-temurin:21-jre-alpine
-VOLUME /tmp
-COPY --from=build /workspace/app/target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"] 
+
+# Diretório de trabalho
+WORKDIR /app
+
+# Copia o .jar já gerado (ajuste o nome se necessário)
+COPY target/*.jar app.jar
+
+# Expõe a porta (ajuste conforme o projeto)
+EXPOSE 8083
+
+# Comando de execução
+ENTRYPOINT ["java", "-jar", "app.jar"]
