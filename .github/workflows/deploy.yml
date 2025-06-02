@@ -48,4 +48,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerceproduct:latest
 
             echo "Subindo novo container..."
-            docker run -d --name ecommerceproduct -p 8088:8080 --network ecommerce-net ${{ secrets.DOCKER_USERNAME }}/ecommerceproduct:latest
+            docker run -d --name ecommerceproduct -p 8089:8080 --network ecommerce-net ${{ secrets.DOCKER_USERNAME }}/ecommerceproduct:latest
