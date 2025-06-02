@@ -1,8 +1,8 @@
-name: Deploy Product Microservice
+name: Deploy User Microservice
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   deploy:
@@ -40,12 +40,12 @@ jobs:
             echo "Criando rede ecommerce-net (se não existir)..."
             docker network inspect ecommerce-net >/dev/null 2>&1 || docker network create ecommerce-net
 
-            echo "Parando e removendo container antigo..."
+            echo "Parando e removendo container antigo do ecommerceproduct..."
             docker stop ecommerceproduct || true
             docker rm ecommerceproduct || true
 
             echo "Puxando nova imagem..."
             docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerceproduct:latest
 
-            echo "Subindo novo container..."
-            docker run -d --name ecommerceproduct -p 8083:8080 --network ecommerce-net ${{ secrets.DOCKER_USERNAME }}/ecommerce_product:latest
+            echo "Subindo novo container do ecommerceproduct..."
+            docker run -d --name ecommerceproduct -p 8083:8080 --network ecommerce-net ${{ secrets.DOCKER_USERNAME }}/ecommerceproduct:latest
