@@ -5,6 +5,9 @@ import com.product.service.ProductImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,6 +75,25 @@ public class ProductImageController {
         try {
             productImageService.deleteById(id);
             return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{id}/image")
+    @Operation(summary = "Get image as PNG", description = "Retrieves the image in PNG format by its ID")
+    public ResponseEntity<byte[]> getImageAsPng(@PathVariable Long id) {
+        try {
+            ProductImageDTO imageDTO = productImageService.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Image not found"));
+    
+            byte[] imageData = imageDTO.getImageData();
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_PNG);
+            headers.setContentLength(imageData.length);
+            
+            return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
