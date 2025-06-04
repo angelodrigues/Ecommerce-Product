@@ -11,6 +11,7 @@ import com.product.service.ProductService;
 import com.product.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<ProductImageDTO> findImageByProductId(Long productId) {
         return productImageRepository.findFirstByProductId(productId)
                 .map(mapper::toDTO);

@@ -80,21 +80,19 @@ public class ProductImageController {
         }
     }
 
-    @GetMapping("/{id}/image")
-    @Operation(summary = "Get image as PNG", description = "Retrieves the image in PNG format by its ID")
-    public ResponseEntity<byte[]> getImageAsPng(@PathVariable Long id) {
+    @GetMapping("/product/{productId}/image")
+    @Operation(summary = "Get image as PNG", description = "Retrieves the image in PNG format by product ID")
+    public ResponseEntity<byte[]> getImageAsPng(@PathVariable Long productId) {
+        var opt = productImageService.findImageByProductId(productId);        
+
         try {
-            ProductImageDTO imageDTO = productImageService.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Image not found"));
-    
+            ProductImageDTO imageDTO = opt.orElseThrow(() -> new RuntimeException("Image not found"));
             byte[] imageData = imageDTO.getImageData();
-            
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_PNG);
             headers.setContentLength(imageData.length);
-            
             return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e) {            
             return ResponseEntity.notFound().build();
         }
     }
