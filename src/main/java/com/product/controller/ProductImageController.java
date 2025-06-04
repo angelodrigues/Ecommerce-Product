@@ -80,7 +80,7 @@ public class ProductImageController {
         }
     }
 
-    @GetMapping("/product/{productId}/image")
+    @GetMapping("/{productId}/image")
     @Operation(summary = "Get image as PNG", description = "Retrieves the image in PNG format by product ID")
     public ResponseEntity<byte[]> getImageAsPng(@PathVariable Long productId) {
         var opt = productImageService.findImageByProductId(productId);        
