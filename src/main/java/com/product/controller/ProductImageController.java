@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/product-images")
+@RequestMapping("/product-images")
 @Tag(name = "Product Image", description = "Product image management APIs")
 public class ProductImageController {
     

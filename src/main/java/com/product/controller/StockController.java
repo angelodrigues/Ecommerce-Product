@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/stocks")
+@RequestMapping("/stocks")
 @Tag(name = "Stock", description = "Stock management APIs")
 public class StockController {
     

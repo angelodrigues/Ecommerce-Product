@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/suppliers")
+@RequestMapping("/suppliers")
 @Tag(name = "Supplier", description = "Supplier management APIs")
 public class SupplierController {
     
